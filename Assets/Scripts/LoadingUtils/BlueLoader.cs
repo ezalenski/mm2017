@@ -10,7 +10,7 @@ namespace CSharpCompiler
 
     public class BlueLoader : MonoBehaviour {
         public string classname;
-        public string path;
+        private string path;
 
         private void Awake()
         {
@@ -21,7 +21,7 @@ namespace CSharpCompiler
             }
             else
             {
-                path = Application.streamingAssetsPath + "/TEAM_BLUE_SCRIPT.cs";
+                path = Application.streamingAssetsPath + "/" + classname + ".cs";
             }
         }
 

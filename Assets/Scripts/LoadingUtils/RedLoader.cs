@@ -11,7 +11,7 @@ namespace CSharpCompiler
     public class RedLoader : MonoBehaviour 
     {
         public string classname;
-        public string path;
+        private string path;
 
         private void Awake()
         {
@@ -22,7 +22,7 @@ namespace CSharpCompiler
             }
             else
             {
-                path = Application.streamingAssetsPath + "/TEAM_RED_SCRIPT.cs";
+                path = Application.streamingAssetsPath + "/" + classname + ".cs";
             }
         }
 

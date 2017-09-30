@@ -96,6 +96,7 @@ public class GameManager : MonoBehaviour {
     private static Slider RedSlide;
     private int myNumber = 0;
     private static bool flagNotify;
+    private bool winnerChosen = false;
 
     private class HUDScript
     {
@@ -229,6 +230,7 @@ public class GameManager : MonoBehaviour {
     }
     private void Winner(team t)
     {
+        winnerChosen = true;
         string gamelog = RedName + "vs" + BlueName + ".txt";
         if (t == team.red)
         {
@@ -324,14 +326,6 @@ public class GameManager : MonoBehaviour {
             myNumber += (int)bl.classname[i];
         }
 
-
-
-        /*if (RedTeamScored == null)
-            RedTeamScored = new UnityEvent();
-        if (BlueTeamScored == null)
-            BlueTeamScored = new UnityEvent();
-        RedTeamScored.AddListener(nullPing);
-        BlueTeamScored.AddListener(nullPing);*/
         InvokeRepeating("gameTimerCountdown", 0.0f, 1.0f);
 
         if (GameOver == null)
@@ -392,11 +386,11 @@ public class GameManager : MonoBehaviour {
             flagNotify = false;
             StartCoroutine(displayNotif());
         }
-        if (RedTeamScore >= 500)
+        if (RedTeamScore >= 500 && !winnerChosen)
             Winner(team.red);
-        else if (BlueTeamScore >= 500)
+        else if (BlueTeamScore >= 500 && !winnerChosen)
             Winner(team.blue);
-        else if (gameTimer == TIMELIMIT)
+        else if (gameTimer == TIMELIMIT && !winnerChosen)
         {
             if (RedTeamScore > BlueTeamScore)
                 Winner(team.red);

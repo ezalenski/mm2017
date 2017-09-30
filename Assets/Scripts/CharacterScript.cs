@@ -67,6 +67,7 @@ public class CharacterScript : MonoBehaviour
     private ActionEvent IPerformed = new ActionEvent();
     private Animator anim;
     private ParticleSystem part;
+    private Light light;
 
     // VARIABLES ----------------------------------------------------------------------------------- |
     
@@ -145,6 +146,7 @@ public class CharacterScript : MonoBehaviour
 
         anim = prefabObject.transform.Find("Space_Soldier_A_LOD1").GetComponent<Animator>();
         part = prefabObject.GetComponent<ParticleSystem>();
+        light = prefabObject.transform.Find("Spotlight").GetComponent<Light>();
 
         visible = new List<GameObject>();
         visibleEnemyLocations = new List<Vector3>();
@@ -153,8 +155,7 @@ public class CharacterScript : MonoBehaviour
         moveDestination = prefabObject.transform.position;
 
         // These functions are called every second. useful for timers and other time based events
-        InvokeRepeating("reloadTimerCountdown", 0.0f, 1.0f);
-        InvokeRepeating("respawnTimerCountdown", 0.0f, 1.0f);
+        
         InvokeRepeating("enemyLocationTimerCountdown", 0.0f, 1.0f);
     }
     /*
@@ -394,7 +395,7 @@ public class CharacterScript : MonoBehaviour
     */
     public bool isDoneMoving(float distance)
     {
-        if (!agent.pathPending)
+        if (!agent.pathPending && getHP() > 0)
         {
             if (agent.remainingDistance <= distance)
             {
@@ -612,6 +613,21 @@ public class CharacterScript : MonoBehaviour
 
     }
 
+    //new reloading timer 
+    private IEnumerator reload()
+    {
+        yield return new WaitForSeconds(1);
+        reloadTimer = 0;
+    }
+
+    //new respawning timer 
+    private IEnumerator respawn()
+    {
+        yield return new WaitForSeconds(5);
+        respawnTImer = 0;
+    }
+
+
     /*
     * Fire at closest enemy to this character, assuming it sees more than one
     */
@@ -637,6 +653,7 @@ public class CharacterScript : MonoBehaviour
             //StartCoroutine(shootLine(target.transform.position));
             targetScript.attackedFromLocations.Add(prefabObject.transform.position);
             targetScript.refreshEnemyLocationTimer();
+            
             this.refreshReloadTimer();
         }
     }
@@ -660,6 +677,7 @@ public class CharacterScript : MonoBehaviour
         }
         if (target != null && reloadTimer == 0)
         {
+            
             CharacterScript targetScript = target.GetComponent<CharacterScript>();
             IShot.Invoke(targetScript, damage);
             anim.SetTrigger("Shoot");
@@ -689,6 +707,7 @@ public class CharacterScript : MonoBehaviour
         }
         if (target != null && reloadTimer == 0)
         {
+            
             CharacterScript targetScript = target.GetComponent<CharacterScript>();
             IShot.Invoke(targetScript, damage);
             anim.SetTrigger("Shoot");
@@ -775,6 +794,8 @@ public class CharacterScript : MonoBehaviour
                 numberOfRays = 20;
                 coneAngle = 330;
                 damage = 20;
+                light.range = 35;
+                light.spotAngle = 60;
             }
             else if (newLoadout == loadout.MEDIUM)
             {
@@ -783,6 +804,8 @@ public class CharacterScript : MonoBehaviour
                 numberOfRays = 20;
                 coneAngle = 320;
                 damage = 25;
+                light.range = 25;
+                light.spotAngle = 80;
             }
             else
             {
@@ -791,6 +814,8 @@ public class CharacterScript : MonoBehaviour
                 numberOfRays = 19;
                 coneAngle = 315;
                 damage = 35;
+                light.range = 15;
+                light.spotAngle = 90;
             }
         }
     }
@@ -818,28 +843,6 @@ public class CharacterScript : MonoBehaviour
     }
 
     /*
-    * Timer function for reload, called every second
-    */
-    private void reloadTimerCountdown()
-    {
-        if (reloadTimer > 0)
-        {
-            reloadTimer -= 1;
-        }
-    }
-
-    /*
-    * Timer function for respawn, called every second
-    */
-    private void respawnTimerCountdown()
-    {
-        if (respawnTImer > 0)
-        {
-            respawnTImer -= 1;
-        }
-    }
-
-    /*
     * Timer function for enemylocation, called every second
     * Enemy location list contains the locations of enemys that shot you.
     * This list is cleared after 4 seconds of not updating, meaning the enemies have probably moved
@@ -862,6 +865,7 @@ public class CharacterScript : MonoBehaviour
     private void refreshRespawnTimer()
     {
         respawnTImer = 5;
+        StartCoroutine(respawn());
     }
 
     /*
@@ -870,6 +874,7 @@ public class CharacterScript : MonoBehaviour
     private void refreshReloadTimer()
     {
         reloadTimer = 1;
+        StartCoroutine(reload());
     }
 
     /*
