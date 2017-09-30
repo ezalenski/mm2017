@@ -119,14 +119,48 @@ public class TEAM_RED_SCRIPT : MonoBehaviour
     }
 
     public void startingStrategy() {
-        if ( character1.getZone() == zone.BlueBase || character1.getZone() == zone.RedBase )
-            character1.setLoadout( loadout.MEDIUM );
-        if ( character2.getZone() == zone.BlueBase || character2.getZone() == zone.RedBase )
-            character2.setLoadout( loadout.SHORT );
-        if ( character2.getZone() == zone.BlueBase || character2.getZone() == zone.RedBase )
-            character3.setLoadout( loadout.LONG );
+        List<CharacterScript> characters = new List<CharacterScript>();
 
-        
+        characters.Add( character2 );
+        characters.Add( character1 );
+        characters.Add( character3 );
+
+        if ( characters[0].getZone() == zone.BlueBase || character1.getZone() == zone.RedBase )
+            characters[0].setLoadout( loadout.MEDIUM );
+        if ( characters[1].getZone() == zone.BlueBase || character2.getZone() == zone.RedBase )
+            characters[1].setLoadout( loadout.SHORT );
+        if ( characters[2].getZone() == zone.BlueBase || character2.getZone() == zone.RedBase )
+            characters[2].setLoadout( loadout.LONG );
+
+        pincerStrategy( characters );
+    }
+
+    // 1-0-2
+    public void pincerStrategy( List<CharacterScript> characters ) {
+        if ( leftObjective.getControllingTeam() != characters[0].getTeam() &&
+        rightObjective.getControllingTeam() != characters[1].getTeam() ) {
+            characters[0].MoveChar( leftObjective.transform.position );
+
+            characters[1].MoveChar( rightObjective.transform.position );
+            characters[2].MoveChar( rightObjective.transform.position );
+        } else {
+            characters[0].MoveChar( middleObjective.transform.position );
+            characters[1].MoveChar( middleObjective.transform.position );
+            characters[2].MoveChar( middleObjective.transform.position );
+        }
+    }
+
+    public void spread( List<CharacterScript> characters ) {
+        if ( characters[0].getZone() == zone.BlueBase || character1.getZone() == zone.RedBase )
+            characters[0].setLoadout( loadout.MEDIUM );
+        if ( characters[1].getZone() == zone.BlueBase || character2.getZone() == zone.RedBase )
+            characters[1].setLoadout( loadout.MEDIUM );
+        if ( characters[2].getZone() == zone.BlueBase || character2.getZone() == zone.RedBase )
+            characters[2].setLoadout( loadout.MEDIUM );
+
+        characters[0].MoveChar( leftObjective.transform.position );
+        characters[1].MoveChar( middleObjective.transform.position );
+        characters[2].MoveChar( rightObjective.transform.position );
     }
 
     // want to take:
