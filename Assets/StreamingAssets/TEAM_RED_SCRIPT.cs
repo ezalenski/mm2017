@@ -1,13 +1,13 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 //---------- CHANGE THIS NAME HERE -------
-public class TEAM_RED_SCRIPT : MonoBehaviour
+public class ALTERNATIVE_INTELLIGENCE : MonoBehaviour
 {
     //private Vector3 position = new Vector3(20.0f, 0.0f, 20.0f);
 
     /// <summary>
-    /// DO NOT MODIFY THIS! 
+    /// DO NOT MODIFY THIS!
     /// vvvvvvvvv
     /// </summary>
     [SerializeField]
@@ -19,7 +19,7 @@ public class TEAM_RED_SCRIPT : MonoBehaviour
     /// <summary>
     /// ^^^^^^^^
     /// </summary>
-    /// 
+    ///
 
 
     // USEFUL VARIABLES
@@ -29,11 +29,12 @@ public class TEAM_RED_SCRIPT : MonoBehaviour
     private float timer = 0;
 
     private team ourTeamColor;
+    private List<Vector3> enemyPositions = new List<Vector3>;
     //---------- CHANGE THIS NAME HERE -------
-    public static TEAM_RED_SCRIPT AddYourselfTo(GameObject host)
+    public static ALTERNATIVE_INTELLIGENCE AddYourselfTo(GameObject host)
     {
         //---------- CHANGE THIS NAME HERE -------
-        return host.AddComponent<TEAM_RED_SCRIPT>();
+        return host.AddComponent<ALTERNATIVE_INTELLIGENCE>();
     }
 
     void Start()
@@ -52,26 +53,18 @@ public class TEAM_RED_SCRIPT : MonoBehaviour
         ourTeamColor = character1.getTeam();
         //Makes gametimer call every second
         InvokeRepeating("gameTimer", 0.0f, 1.0f);
-
     }
 
     void Update()
     {
-        //TODO: 2 squads, c1 + c2 & c3. c1 = short, c2 = medium, c3 = long
         //Set caracter loadouts, can only happen when the characters are at base.
         if (character1.getZone() == zone.BlueBase || character1.getZone() == zone.RedBase)
-            character1.setLoadout(loadout.LONG);
+            character1.setLoadout(loadout.SHORT);
         if (character2.getZone() == zone.BlueBase || character2.getZone() == zone.RedBase)
-            character2.setLoadout(loadout.LONG);
+            character2.setLoadout(loadout.MEDIUM);
         if (character2.getZone() == zone.BlueBase || character2.getZone() == zone.RedBase)
             character3.setLoadout(loadout.LONG);
 
-        /*
-         *TODO: send squad 1 to middle objective, send squad 2 to a side objective (randomize?)
-         * if side objective is contested, back off and wait for help/periodically check if taken.
-         * have short ferry between s1 and s2 to help defend who needs it. make the other back off 
-         * and wait for backup and retake with c1
-         */
         // in the first couple of seconds we just scan around
         if (timer < 10)
         {
@@ -127,3 +120,10 @@ public class TEAM_RED_SCRIPT : MonoBehaviour
 
 }
 
+//actions move character
+private class ActionInput
+{
+    public List<Vector3> teamPositions;
+    public List<Vector3> enemyPositions;
+    public Vector3 target;
+}
