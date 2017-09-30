@@ -106,7 +106,7 @@ public class ALTERNATIVE_INTELLIGENCE : MonoBehaviour
 
         // save our team, changes every time
         ourTeamColor = character1.getTeam();
-        logSystem = (ourTeamColor == team.blue) : new LoggingSystem(redSpawn) ? new LoggingSystem(blueSpawn);
+        logSystem = (ourTeamColor == team.blue) ? new LoggingSystem(redSpawn) : new LoggingSystem(blueSpawn);
         Debug.Log("Enemy " + logSystem.enemies[0].loc);
 
         //Makes gametimer call every second
@@ -230,7 +230,7 @@ public class ALTERNATIVE_INTELLIGENCE : MonoBehaviour
         dude.rotateAngle(500);
     }
 
-    
+
 
     public Vector3 eyesOnTarget(CharacterScript dude){
 
@@ -239,7 +239,7 @@ public class ALTERNATIVE_INTELLIGENCE : MonoBehaviour
     public Vector3 buddySystemScan(List<CharacterScript> buds){
         buds[0].rotateAngle(160);
         buds[1].rotateAngle(-160);
-        
+
     }
 
 }
