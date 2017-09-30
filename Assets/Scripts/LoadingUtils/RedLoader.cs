@@ -101,5 +101,28 @@ namespace CSharpCompiler
 
     public class squads : MonoBehaviour {
 
+        private List<GameObject> squad = new List<GameObject>();
+
+        public int currentSquad() {
+            if (  )
+
+            return -1;
+        }
+
+        public void transfer() {
+
+        }
+
+        public int currentLocation() {
+
+        }
+
+        public int size() {
+            return 1;
+        }
+
+        public void clear() {
+
+        }
     }
 }
