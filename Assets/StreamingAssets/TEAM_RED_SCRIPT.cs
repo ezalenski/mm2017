@@ -39,6 +39,7 @@ public class TEAM_RED_SCRIPT : MonoBehaviour
         //---------- CHANGE THIS NAME HERE -------
         return host.AddComponent<TEAM_RED_SCRIPT>();
     }
+    public List<CharacterScript> players = new List<CharacterScript>();
 
     [System.Serializable]
     public class Character {
@@ -206,13 +207,27 @@ public class TEAM_RED_SCRIPT : MonoBehaviour
                 character3.SetFacing(rightObjective.transform.position);
             }
         }*/
-        startingStrategy();
         Dictionary<int, Vector3> found = checkVisible(characters);
         foreach (Character c in characters) {
             if(!found.ContainsKey(c.id))
                 c.cs.rotateAngle(500);
             else
                 c.cs.SetFacing(found[c.id]);
+        }
+
+        if ( leftObjective.getControllingTeam() != ourTeamColor ||
+            rightObjective.getControllingTeam() != ourTeamColor ) {
+            startingStrategy();
+        } else {
+            if ( middleObjective.getControllingTeam() != ourTeamColor ) {
+                rushMidStrategy();
+            } else if ( characters[0].cs.visibleEnemyLocations.Count > 1 ) {
+                pincerSwapLong();
+            } else if ( leftObjective.getControllingTeam() == ourTeamColor &&
+                rightObjective.getControllingTeam() == ourTeamColor &&
+                middleObjective.getControllingTeam() == ourTeamColor) {
+                    spreadStrategy();
+            }
         }
     }
 
@@ -222,6 +237,7 @@ public class TEAM_RED_SCRIPT : MonoBehaviour
         timer += 1;
     }
 
+/* ------------------ strategy set ------------------ */
     public void startingStrategy() {
 
         if ( characters[0].cs.getZone() == zone.BlueBase || characters[0].cs.getZone() == zone.RedBase )
@@ -234,32 +250,78 @@ public class TEAM_RED_SCRIPT : MonoBehaviour
         pincerStrategy();
     }
 
-    // 1-0-2
-    public void pincerStrategy() {
-        if ( leftObjective.getControllingTeam() != ourTeamColor || rightObjective.getControllingTeam() != ourTeamColor ) {
-            characters[0].cs.MoveChar( leftObjective.transform.position );
-
-            characters[1].cs.MoveChar( rightObjective.transform.position );
-            characters[2].cs.MoveChar( rightObjective.transform.position );
-        } else {
+    public void rushMidStrategy(  ) {
             characters[0].cs.MoveChar( middleObjective.transform.position );
             characters[1].cs.MoveChar( middleObjective.transform.position );
             characters[2].cs.MoveChar( middleObjective.transform.position );
+    }
+
+    // 1-0-2
+    public void pincerStrategy(  ) {
+        characters[0].cs.MoveChar( rightObjective.transform.position );
+        characters[1].cs.MoveChar( rightObjective.transform.position );
+        characters[2].cs.MoveChar( leftObjective.transform.position );
+    }
+
+    public void pincerSwapLong(  ) {
+        characters[0].cs.MoveChar( leftObjective.transform.position );
+        characters[1].cs.MoveChar( rightObjective.transform.position );
+        characters[2].cs.MoveChar( leftObjective.transform.position );
+    }
+
+    public void spreadStrategy(  ) {
+        if ( characters[1].cs.visibleEnemyLocations.Count < 1 &&
+            characters[1].cs.visibleEnemyLocations.Count < 1 ) {
+            characters[0].cs.MoveChar( new Vector3( -8.8f, 1.5f, 13.5f ) );
+            characters[0].cs.SetFacing( middleObjective.transform.position );
+            characters[1].cs.MoveChar( new Vector3(-32f, 1.5f, -26f ) );
+            characters[1].cs.SetFacing( leftObjective.transform.position );
+            characters[2].cs.MoveChar( new Vector3( 40f, 1.5f, 18f ) );
+            characters[2].cs.SetFacing( rightObjective.transform.position );
         }
     }
 
-    public void spread( List<CharacterScript> characters ) {
-        if ( characters[0].getZone() == zone.BlueBase || character1.getZone() == zone.RedBase )
+    public void longRangeStrategy(  ) {
+        if ( characters[0].cs.getZone() == zone.BlueBase || character1.getZone() == zone.RedBase )
+            characters[0].setLoadout( loadout.LONG );
+        if ( characters[1].cs.getZone() == zone.BlueBase || character2.getZone() == zone.RedBase )
+            characters[1].setLoadout( loadout.LONG );
+        if ( characters[2].cs.getZone() == zone.BlueBase || character2.getZone() == zone.RedBase )
+            characters[2].setLoadout( loadout.LONG );
+
+        characters[0].cs.MoveChar( leftObjective.transform.position );
+        characters[1].cs.MoveChar( middleObjective.transform.position );
+        characters[2].cs.MoveChar( rightObjective.transform.position );
+    }
+
+    public void medRangeStrategy(  ) {
+        if ( characters[0].cs.getZone() == zone.BlueBase || character1.getZone() == zone.RedBase )
             characters[0].setLoadout( loadout.MEDIUM );
-        if ( characters[1].getZone() == zone.BlueBase || character2.getZone() == zone.RedBase )
+        if ( characters[1].cs.getZone() == zone.BlueBase || character2.getZone() == zone.RedBase )
             characters[1].setLoadout( loadout.MEDIUM );
-        if ( characters[2].getZone() == zone.BlueBase || character2.getZone() == zone.RedBase )
+        if ( characters[2].cs.getZone() == zone.BlueBase || character2.getZone() == zone.RedBase )
             characters[2].setLoadout( loadout.MEDIUM );
 
-        characters[0].MoveChar( leftObjective.transform.position );
-        characters[1].MoveChar( middleObjective.transform.position );
-        characters[2].MoveChar( rightObjective.transform.position );
+        characters[0].cs.MoveChar( leftObjective.transform.position );
+        characters[1].cs.MoveChar( middleObjective.transform.position );
+        characters[2].cs.MoveChar( rightObjective.transform.position );
     }
+
+    public void shortRangeStrategy(  ) {
+        if ( characters[0].cs.getZone() == zone.BlueBase || character1.getZone() == zone.RedBase )
+            characters[0].setLoadout( loadout.SHORT );
+        if ( characters[1].cs.getZone() == zone.BlueBase || character2.getZone() == zone.RedBase )
+            characters[1].setLoadout( loadout.SHORT );
+        if ( characters[2].cs.getZone() == zone.BlueBase || character2.getZone() == zone.RedBase )
+            characters[2].setLoadout( loadout.SHORT );
+
+        characters[0].cs.MoveChar( leftObjective.transform.position );
+        characters[1].cs.MoveChar( middleObjective.transform.position );
+        characters[2].cs.MoveChar( rightObjective.transform.position );
+    }
+
+    
+/* ------------------ end strategy set ------------------ */
 
     // want to take:
     /* - teammems within close proximity (dist depend on type?)
