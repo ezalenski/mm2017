@@ -119,6 +119,13 @@ public class TEAM_RED_SCRIPT : MonoBehaviour
     }
 
     public void startingStrategy() {
+        if ( character1.getZone() == zone.BlueBase || character1.getZone() == zone.RedBase )
+            character1.setLoadout( loadout.MEDIUM );
+        if ( character2.getZone() == zone.BlueBase || character2.getZone() == zone.RedBase )
+            character2.setLoadout( loadout.SHORT );
+        if ( character2.getZone() == zone.BlueBase || character2.getZone() == zone.RedBase )
+            character3.setLoadout( loadout.LONG );
+
         
     }
 }
