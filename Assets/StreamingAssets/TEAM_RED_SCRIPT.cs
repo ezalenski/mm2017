@@ -121,5 +121,26 @@ public class TEAM_RED_SCRIPT : MonoBehaviour
     public void startingStrategy() {
         
     }
+
+    // want to take:
+    /* - teammems within close proximity (dist depend on type?)
+            - if solo, scan larger (don't watch back until at point))
+            - if 2 total, back to back/windshield wiper
+            - if all, one point to nearest point, other two windshield */
+    public Vector3 scanWide(CharacterScript){
+        
+    }
+
+    public Vector3 scanNearestPoint(CharacterScript){
+
+    }
+
+    public Vector3 eyesOnTarget(CharacterScript){
+
+    }
+
+    public Vector3 buddySystemScan(CharacterScript, buddyAorB){
+        
+    }
 }
 
