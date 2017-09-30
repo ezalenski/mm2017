@@ -117,7 +117,7 @@ public class TEAM_RED_SCRIPT : MonoBehaviour
 
     void Update()
     {
-        //Set caracter loadouts, can only happen when the characters are at base.
+        /*//Set caracter loadouts, can only happen when the characters are at base.
         if (character1.getZone() == zone.BlueBase || character1.getZone() == zone.RedBase)
             character1.setLoadout(loadout.LONG);
         if (character2.getZone() == zone.BlueBase || character2.getZone() == zone.RedBase)
@@ -169,7 +169,8 @@ public class TEAM_RED_SCRIPT : MonoBehaviour
                 character3.MoveChar(rightObjective.transform.position);
                 character3.SetFacing(rightObjective.transform.position);
             }
-        }
+        }*/
+        startingStrategy();
     }
 
     // a simple function to track game time
@@ -197,8 +198,7 @@ public class TEAM_RED_SCRIPT : MonoBehaviour
 
     // 1-0-2
     public void pincerStrategy( List<CharacterScript> characters ) {
-        if ( leftObjective.getControllingTeam() != characters[0].getTeam() &&
-        rightObjective.getControllingTeam() != characters[1].getTeam() ) {
+        if ( leftObjective.getControllingTeam() != ourTeamColor || rightObjective.getControllingTeam() != ourTeamColor ) {
             characters[0].MoveChar( leftObjective.transform.position );
 
             characters[1].MoveChar( rightObjective.transform.position );
@@ -236,6 +236,7 @@ public class TEAM_RED_SCRIPT : MonoBehaviour
 
 
     public Vector3 eyesOnTarget(CharacterScript dude){
+        //if()
         return Vector3.zero;
 
     }
