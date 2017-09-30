@@ -41,9 +41,9 @@ public class TEAM_BLUE_SCRIPT : MonoBehaviour
         character2.rotateAngle(500);
         character3.rotateAngle(500);
 
-        character1.MoveChar(new Vector3());
-        character2.MoveChar(new Vector3(40.0f, 1.5f, 24.0f));
-        character3.MoveChar(new Vector3(-40.0f, 1.5f, -24.0f));
+        //character1.MoveChar(new Vector3());
+        //character2.MoveChar(new Vector3(40.0f, 1.5f, 24.0f));
+        //character3.MoveChar(new Vector3(-40.0f, 1.5f, -24.0f));
 
     } 
 }
