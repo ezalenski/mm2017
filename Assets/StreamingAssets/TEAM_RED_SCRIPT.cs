@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 //---------- CHANGE THIS NAME HERE -------
-public class TEAM_RED_SCRIPT : MonoBehaviour
+public class ALTERNATIVE_INTELLIGENCE : MonoBehaviour
 {
     //private Vector3 position = new Vector3(20.0f, 0.0f, 20.0f);
 
     /// <summary>
-    /// DO NOT MODIFY THIS! 
+    /// DO NOT MODIFY THIS!
     /// vvvvvvvvv
     /// </summary>
     [SerializeField]
@@ -19,7 +19,7 @@ public class TEAM_RED_SCRIPT : MonoBehaviour
     /// <summary>
     /// ^^^^^^^^
     /// </summary>
-    /// 
+    ///
 
 
     // USEFUL VARIABLES
@@ -29,11 +29,67 @@ public class TEAM_RED_SCRIPT : MonoBehaviour
     private float timer = 0;
 
     private team ourTeamColor;
+    private LoggingSystem logSystem;
+    private Vector3 blueSpawn = new Vector3(55.0f, 1.325f, -30.0f);
+    private Vector3 redSpawn = new Vector3(-55.0f, 1.325f, 30.0f);
     //---------- CHANGE THIS NAME HERE -------
-    public static TEAM_RED_SCRIPT AddYourselfTo(GameObject host)
+    public static ALTERNATIVE_INTELLIGENCE AddYourselfTo(GameObject host)
     {
         //---------- CHANGE THIS NAME HERE -------
-        return host.AddComponent<TEAM_RED_SCRIPT>();
+        return host.AddComponent<ALTERNATIVE_INTELLIGENCE>();
+    }
+
+    [System.Serializable]
+    private class LoggingSystem {
+        public List<Enemy> enemies;
+        public List<Item> knownItems;
+        private Vector3 enemySpawn;
+
+        private class Enemy {
+            public ind id;
+            public Vector3 location = null;
+            public int dmgTaken = 0;
+            public bool dead = false;
+            public loadout lo = loadout.LONG;
+        }
+
+        public LoggingSystem(Vector3 enemySpawnLoc) {
+            enemySpawn = enemySpawnLoc;
+            enemies = new List<Enemy>();
+            for(int i = 0; i < 3; i++) {
+                enemies.add(new Enemy());
+                enemies[i].id = i;
+                enemies[i].location = enemySpawnLoc;
+            }
+        }
+
+        //call with StartCoroutine(logSystem.addEnemyLocation, id, loc)
+        public IEnumerator addEnemyLocation(int id, Vector3 loc) {
+            enemies[id].location = loc;
+            yield return new WaitForSeconds(5.0f);
+            enemies[id].location = null;
+        }
+
+        public void addEnemyDmg(int id, int dmg) {
+            enemies[id].dmgTaken += dmg;
+        }
+
+        public void addEnemyLoadout(int id, loadout lo) {
+            enemies[id].lo = lo;
+        }
+
+
+        //call with StartCoroutine(logSystem.enemyDead, id)
+        public IEnumerator enemyDead(int id) {
+            Enemy deadEnemy = enemies[id];
+            deadEnemy.dead = true;
+            deadEnemy.location = null;
+            deadEnemy.lo = loadout.LONG;
+            deadEnemy.dmgTaken = 0;
+            yield return new WaitForSeconds(5.0f);
+            deadEnemy.dead = false;
+            deadEnemy.location = enemySpawn;
+        }
     }
 
     void Start()
@@ -50,9 +106,11 @@ public class TEAM_RED_SCRIPT : MonoBehaviour
 
         // save our team, changes every time
         ourTeamColor = character1.getTeam();
+        logSystem = (ourTeamColor == team.blue) : new LoggingSystem(redSpawn) ? new LoggingSystem(blueSpawn);
+        Debug.Log("Enemy " + logSystem.enemies[0].loc);
+
         //Makes gametimer call every second
         InvokeRepeating("gameTimer", 0.0f, 1.0f);
-
     }
 
     void Update()
@@ -169,7 +227,7 @@ public class TEAM_RED_SCRIPT : MonoBehaviour
             - if 2 total, back to back/windshield wiper
             - if all, one point to nearest point, other two windshield */
     public Vector3 scanWide(CharacterScript){
-        
+
     }
 
     public Vector3 scanNearestPoint(CharacterScript){
@@ -181,7 +239,14 @@ public class TEAM_RED_SCRIPT : MonoBehaviour
     }
 
     public Vector3 buddySystemScan(CharacterScript, buddyAorB){
-        
+
     }
+
 }
 
+/*private class Item {
+    public bool ourTeam = false;
+    public Vector3 location = null;
+    public typeOfItem type = null;
+    public int timeout = 0;
+}*/
