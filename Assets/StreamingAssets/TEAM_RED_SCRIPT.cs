@@ -199,22 +199,20 @@ public class TEAM_RED_SCRIPT : MonoBehaviour
         players.Add( character2 );
         players.Add( character3 );
 
-        // if ( leftObjective.getControllingTeam() != ourTeamColor ||
-        //     rightObjective.getControllingTeam() != ourTeamColor ) {
-        //     startingStrategy();
-        // } else {
-        //     if ( middleObjective.getControllingTeam() != ourTeamColor ) {
-        //         rushMidStrategy( players );
-        //     } else if ( players[0].visibleEnemyLocations.Count > 1 ) {
-        //         pincerSwapLong( players );
-        //     } else if ( leftObjective.getControllingTeam() == ourTeamColor &&
-        //         rightObjective.getControllingTeam() == ourTeamColor &&
-        //         middleObjective.getControllingTeam() == ourTeamColor) {
-        //             spreadStrategy( players );
-        //     }
-        // }
-
-        spreadStrategy( players );
+        if ( leftObjective.getControllingTeam() != ourTeamColor ||
+            rightObjective.getControllingTeam() != ourTeamColor ) {
+            startingStrategy();
+        } else {
+            if ( middleObjective.getControllingTeam() != ourTeamColor ) {
+                rushMidStrategy( players );
+            } else if ( players[0].visibleEnemyLocations.Count > 1 ) {
+                pincerSwapLong( players );
+            } else if ( leftObjective.getControllingTeam() == ourTeamColor &&
+                rightObjective.getControllingTeam() == ourTeamColor &&
+                middleObjective.getControllingTeam() == ourTeamColor) {
+                    spreadStrategy( players );
+            }
+        }
     }
 
     // a simple function to track game time
