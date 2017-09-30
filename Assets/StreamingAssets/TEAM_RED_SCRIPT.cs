@@ -118,5 +118,8 @@ public class TEAM_RED_SCRIPT : MonoBehaviour
         timer += 1;
     }
 
+    public void startingStrategy() {
+        
+    }
 }
 
