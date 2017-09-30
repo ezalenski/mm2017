@@ -104,7 +104,6 @@ namespace CSharpCompiler
         private List<GameObject> squad = new List<GameObject>();
 
         public int currentSquad() {
-            if (  )
 
             return -1;
         }
@@ -114,7 +113,7 @@ namespace CSharpCompiler
         }
 
         public int currentLocation() {
-
+            return 0;
         }
 
         public int size() {
@@ -122,6 +121,14 @@ namespace CSharpCompiler
         }
 
         public void clear() {
+
+        }
+
+        public void changeLeader() {
+
+        }
+
+        public void setLeader() {
 
         }
     }

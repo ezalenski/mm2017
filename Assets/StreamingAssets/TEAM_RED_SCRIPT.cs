@@ -78,7 +78,7 @@ public class TEAM_RED_SCRIPT : MonoBehaviour
             character1.FaceClosestWaypoint();
             character2.FaceClosestWaypoint();
             character3.FaceClosestWaypoint();
-            character1.MoveChar(new Vector3(-8.8f, 1.5f, 13.5f));
+            character1.MoveChar(new Vector3(-8.8f, 1.5f, 13.5f)); 
         }
         // place sniper in position, run to cover if attacked
         if (character1.attackedFromLocations.Capacity == 0)
