@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 //---------- CHANGE THIS NAME HERE -------
-public class ALTERNATIVE_INTELLIGENCE : MonoBehaviour
+public class TEAM_RED_SCRIPT : MonoBehaviour
 {
     //private Vector3 position = new Vector3(20.0f, 0.0f, 20.0f);
 
@@ -33,21 +33,22 @@ public class ALTERNATIVE_INTELLIGENCE : MonoBehaviour
     private Vector3 blueSpawn = new Vector3(55.0f, 1.325f, -30.0f);
     private Vector3 redSpawn = new Vector3(-55.0f, 1.325f, 30.0f);
     //---------- CHANGE THIS NAME HERE -------
-    public static ALTERNATIVE_INTELLIGENCE AddYourselfTo(GameObject host)
+    public static TEAM_RED_SCRIPT AddYourselfTo(GameObject host)
     {
         //---------- CHANGE THIS NAME HERE -------
-        return host.AddComponent<ALTERNATIVE_INTELLIGENCE>();
+        return host.AddComponent<TEAM_RED_SCRIPT>();
     }
 
     [System.Serializable]
     private class LoggingSystem {
         public List<Enemy> enemies;
-        public List<Item> knownItems;
+        //public List<Item> knownItems;
         private Vector3 enemySpawn;
 
-        private class Enemy {
-            public ind id;
-            public Vector3 location = null;
+        [System.Serializable]
+        public class Enemy {
+            public int id;
+            public Vector3 location = Vector3.negativeInfinity;
             public int dmgTaken = 0;
             public bool dead = false;
             public loadout lo = loadout.LONG;
@@ -57,7 +58,7 @@ public class ALTERNATIVE_INTELLIGENCE : MonoBehaviour
             enemySpawn = enemySpawnLoc;
             enemies = new List<Enemy>();
             for(int i = 0; i < 3; i++) {
-                enemies.add(new Enemy());
+                enemies.Add(new Enemy());
                 enemies[i].id = i;
                 enemies[i].location = enemySpawnLoc;
             }
@@ -67,7 +68,7 @@ public class ALTERNATIVE_INTELLIGENCE : MonoBehaviour
         public IEnumerator addEnemyLocation(int id, Vector3 loc) {
             enemies[id].location = loc;
             yield return new WaitForSeconds(5.0f);
-            enemies[id].location = null;
+            enemies[id].location = Vector3.negativeInfinity;
         }
 
         public void addEnemyDmg(int id, int dmg) {
@@ -83,7 +84,7 @@ public class ALTERNATIVE_INTELLIGENCE : MonoBehaviour
         public IEnumerator enemyDead(int id) {
             Enemy deadEnemy = enemies[id];
             deadEnemy.dead = true;
-            deadEnemy.location = null;
+            deadEnemy.location = Vector3.negativeInfinity;
             deadEnemy.lo = loadout.LONG;
             deadEnemy.dmgTaken = 0;
             yield return new WaitForSeconds(5.0f);
@@ -106,9 +107,10 @@ public class ALTERNATIVE_INTELLIGENCE : MonoBehaviour
 
         // save our team, changes every time
         ourTeamColor = character1.getTeam();
+        
         logSystem = (ourTeamColor == team.blue) ? new LoggingSystem(redSpawn) : new LoggingSystem(blueSpawn);
-        Debug.Log("Enemy " + logSystem.enemies[0].loc);
-
+        Debug.Log("Enemy " + logSystem.enemies[0].location);
+        
         //Makes gametimer call every second
         InvokeRepeating("gameTimer", 0.0f, 1.0f);
     }
@@ -226,19 +228,22 @@ public class ALTERNATIVE_INTELLIGENCE : MonoBehaviour
             - if solo, scan larger (don't watch back until at point))
             - if 2 total, back to back/windshield wiper
             - if all, one point to nearest point, other two windshield */
-    public Vector3 scan360(List<CharacterScript> dude){
+    public Vector3 scan360(CharacterScript dude){
         dude.rotateAngle(500);
+        return Vector3.zero;
     }
 
 
 
     public Vector3 eyesOnTarget(CharacterScript dude){
+        return Vector3.zero;
 
     }
 
     public Vector3 buddySystemScan(List<CharacterScript> buds){
         buds[0].rotateAngle(160);
         buds[1].rotateAngle(-160);
+        return Vector3.zero;
 
     }
 
@@ -246,7 +251,7 @@ public class ALTERNATIVE_INTELLIGENCE : MonoBehaviour
 
 /*private class Item {
     public bool ourTeam = false;
-    public Vector3 location = null;
+    public Vector3 location = Vector3.negativeInfinity;
     public typeOfItem type = null;
     public int timeout = 0;
 }*/
