@@ -392,9 +392,9 @@ public class GameManager : MonoBehaviour {
             flagNotify = false;
             StartCoroutine(displayNotif());
         }
-        if (RedTeamScore == 500)
+        if (RedTeamScore >= 500)
             Winner(team.red);
-        else if (BlueTeamScore == 500)
+        else if (BlueTeamScore >= 500)
             Winner(team.blue);
         else if (gameTimer == TIMELIMIT)
         {

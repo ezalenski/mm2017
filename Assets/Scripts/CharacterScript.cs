@@ -135,9 +135,11 @@ public class CharacterScript : MonoBehaviour
         IPerformed.AddListener(nullPing3);
         enter.addItemListener(triggered);
 
-        speedDisplay = prefabObject.transform.Find("SpeedUp").GetComponent<GameObject>();
-        powerDisplay = prefabObject.transform.Find("Power").GetComponent<GameObject>();
-
+        speedDisplay = prefabObject.transform.Find("SpeedUp").gameObject;
+        powerDisplay = prefabObject.transform.Find("Power").gameObject;
+        speedDisplay.SetActive(false);
+        powerDisplay.SetActive(false);
+        
         gm = GameObject.Find("Main Camera").GetComponent<GameManager>();
         gm.addDamageListener(MyTeam, playerNumber, RecordHit);
 
@@ -248,6 +250,19 @@ public class CharacterScript : MonoBehaviour
     // --------------------------------------------------------------------------------------------- |
 
 
+    //getters
+    public List<GameObject> getItemList()
+    {
+        return gm.IC.SpawnedItems;
+    }
+
+    public GameObject getPrefabObject()
+    {
+        return prefabObject;
+    }
+       
+
+
     // TURNING RELATED FUNCTIONS ------------------------------------------------------------------- |
 
     /*
@@ -327,10 +342,10 @@ public class CharacterScript : MonoBehaviour
      * 
      * @parameter angle The angle you want to rotate
      */
-    public void rotateangle(float angle)
+    public void rotateAngle(float angle)
     {
         angle = angle * Mathf.PI / 180.0f;
-        Vector3 newfacing = new Vector3(prefabObject.transform.forward.x * Mathf.Cos(angle) - prefabObject.transform.forward.z * Mathf.Sin(angle), 0, prefabObject.transform.forward.z * Mathf.Cos(angle) + prefabObject.transform.forward.x * Mathf.Sin(angle));
+        Vector3 newfacing = new Vector3(prefabObject.transform.position.x + (prefabObject.transform.forward.x * Mathf.Cos(angle) - prefabObject.transform.forward.z * Mathf.Sin(angle)), 0, prefabObject.transform.position.z + (prefabObject.transform.forward.z * Mathf.Cos(angle) + prefabObject.transform.forward.x * Mathf.Sin(angle)));
         SetFacing(newfacing);
     }
     // --------------------------------------------------------------------------------------------- |
@@ -468,7 +483,6 @@ public class CharacterScript : MonoBehaviour
                 closestItem = item;
             }
         }
-        Debug.Log(gm.IC.SpawnedItems.Capacity);
         return closestItem;
     }
 
@@ -593,7 +607,7 @@ public class CharacterScript : MonoBehaviour
         }
         else if (priority == firePriority.HIGHHP)
         {
-            fireLowestHP();
+            fireHighestHP();
         }
 
     }
@@ -861,7 +875,7 @@ public class CharacterScript : MonoBehaviour
     /*
     * refresh the enemy location timer
     */
-    public void refreshEnemyLocationTimer()
+    private void refreshEnemyLocationTimer()
     {
         enemyLocationTimer = 4;
     }

@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2015
+# Visual Studio 2017
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mechmania17", "Mechmania17.csproj", "{C31D53CB-E65C-B78D-79F9-40DE797AD72C}"
 EndProject
 Global

@@ -46,7 +46,7 @@ public class ObjectiveScript : MonoBehaviour
         for (int i = 0; i < length; i++)
         {
             //Debug.Log("I SEE " + charactersOnMe[i].name + " and he has " + charactersOnMe[i].getHP() + " " + i);
-            if (charactersOnMe[i].getHP() == 0)
+            if (charactersOnMe[i].getHP() < 1)
             {
                 if (charactersOnMe[i].getTeam() == team.red)
                     redOnMe--;
