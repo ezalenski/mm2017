@@ -57,6 +57,7 @@ public class TEAM_RED_SCRIPT : MonoBehaviour
 
     void Update()
     {
+        //TODO: 2 squads, c1 + c2 & c3. c1 = short, c2 = medium, c3 = long
         //Set caracter loadouts, can only happen when the characters are at base.
         if (character1.getZone() == zone.BlueBase || character1.getZone() == zone.RedBase)
             character1.setLoadout(loadout.LONG);
@@ -65,6 +66,12 @@ public class TEAM_RED_SCRIPT : MonoBehaviour
         if (character2.getZone() == zone.BlueBase || character2.getZone() == zone.RedBase)
             character3.setLoadout(loadout.LONG);
 
+        /*
+         *TODO: send squad 1 to middle objective, send squad 2 to a side objective (randomize?)
+         * if side objective is contested, back off and wait for help/periodically check if taken.
+         * have short ferry between s1 and s2 to help defend who needs it. make the other back off 
+         * and wait for backup and retake with c1
+         */
         // in the first couple of seconds we just scan around
         if (timer < 10)
         {
