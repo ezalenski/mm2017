@@ -226,20 +226,20 @@ public class ALTERNATIVE_INTELLIGENCE : MonoBehaviour
             - if solo, scan larger (don't watch back until at point))
             - if 2 total, back to back/windshield wiper
             - if all, one point to nearest point, other two windshield */
-    public Vector3 scanWide(CharacterScript){
+    public Vector3 scan360(List<CharacterScript> dude){
+        dude.rotateAngle(500);
+    }
+
+    
+
+    public Vector3 eyesOnTarget(CharacterScript dude){
 
     }
 
-    public Vector3 scanNearestPoint(CharacterScript){
-
-    }
-
-    public Vector3 eyesOnTarget(CharacterScript){
-
-    }
-
-    public Vector3 buddySystemScan(CharacterScript, buddyAorB){
-
+    public Vector3 buddySystemScan(List<CharacterScript> buds){
+        buds[0].rotateAngle(160);
+        buds[1].rotateAngle(-160);
+        
     }
 
 }
