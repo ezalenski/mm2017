@@ -97,4 +97,8 @@ namespace CSharpCompiler
             return result.CompiledAssembly;
         }
     }
+
+    public class squads : MonoBehaviour {
+
+    }
 }
