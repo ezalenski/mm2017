@@ -1031,7 +1031,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5383578204c8d734caacc4978ecbc007, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  classname: TEAM_BLUE_SCRIPT
+  classname: TEAM_RED_SCRIPT
 --- !u!4 &42816537
 Transform:
   m_ObjectHideFlags: 0

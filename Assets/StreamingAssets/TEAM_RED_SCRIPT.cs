@@ -247,7 +247,7 @@ public class TEAM_RED_SCRIPT : MonoBehaviour
         if ( characters[2].cs.getZone() == zone.BlueBase || characters[2].cs.getZone() == zone.RedBase )
             characters[2].setLoadout( loadout.LONG );
 
-        pincerStrategy();
+        // pincerStrategy();
     }
 
     public void rushMidStrategy(  ) {
@@ -258,9 +258,15 @@ public class TEAM_RED_SCRIPT : MonoBehaviour
 
     // 1-0-2
     public void pincerStrategy(  ) {
-        characters[0].cs.MoveChar( rightObjective.transform.position );
-        characters[1].cs.MoveChar( rightObjective.transform.position );
-        characters[2].cs.MoveChar( leftObjective.transform.position );
+        if ( ourTeamColor == team.blue ) {
+            characters[0].cs.MoveChar( rightObjective.transform.position );
+            characters[1].cs.MoveChar( rightObjective.transform.position );
+            characters[2].cs.MoveChar( leftObjective.transform.position );
+        } else {
+            characters[0].cs.MoveChar( leftObjective.transform.position );
+            characters[1].cs.MoveChar( leftObjective.transform.position );
+            characters[2].cs.MoveChar( rightObjective.transform.position );
+        }
     }
 
     public void pincerSwapLong(  ) {
@@ -270,14 +276,26 @@ public class TEAM_RED_SCRIPT : MonoBehaviour
     }
 
     public void spreadStrategy(  ) {
-        if ( characters[1].cs.visibleEnemyLocations.Count < 1 &&
-            characters[1].cs.visibleEnemyLocations.Count < 1 ) {
-            characters[0].cs.MoveChar( new Vector3( -8.8f, 1.5f, 13.5f ) );
-            characters[0].cs.SetFacing( middleObjective.transform.position );
-            characters[1].cs.MoveChar( new Vector3(-32f, 1.5f, -26f ) );
-            characters[1].cs.SetFacing( leftObjective.transform.position );
-            characters[2].cs.MoveChar( new Vector3( 40f, 1.5f, 18f ) );
-            characters[2].cs.SetFacing( rightObjective.transform.position );
+        if ( ourTeamColor == team.red ) {
+            if ( characters[0].cs.visibleEnemyLocations.Count < 1 &&
+                characters[0].cs.visibleEnemyLocations.Count < 1 ) {
+                characters[2].cs.MoveChar( new Vector3( -8.8f, 1.5f, 13.5f ) );
+                characters[2].cs.SetFacing( middleObjective.transform.position );
+                characters[0].cs.MoveChar( new Vector3(-32f, 1.5f, -26f ) );
+                characters[0].cs.SetFacing( leftObjective.transform.position );
+                characters[1].cs.MoveChar( new Vector3( 40f, 1.5f, 18f ) );
+                characters[1].cs.SetFacing( rightObjective.transform.position );
+            }
+        } else {
+            if ( characters[0].cs.visibleEnemyLocations.Count < 1 &&
+                characters[0].cs.visibleEnemyLocations.Count < 1 ) {
+                characters[2].cs.MoveChar( new Vector3( 10f, 1.5f, -13f ) );
+                characters[2].cs.SetFacing( middleObjective.transform.position );
+                characters[0].cs.MoveChar( new Vector3(-40f, 1.5f, -17f ) );
+                characters[0].cs.SetFacing( leftObjective.transform.position );
+                characters[1].cs.MoveChar( new Vector3( 32.5f, 1.5f, 26f ) );
+                characters[1].cs.SetFacing( rightObjective.transform.position );
+            }
         }
     }
 
