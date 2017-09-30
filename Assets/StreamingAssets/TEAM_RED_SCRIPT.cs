@@ -45,11 +45,29 @@ public class TEAM_RED_SCRIPT : MonoBehaviour
         public CharacterScript cs;
         public bool locked;
         public int id;
+        private loadout lo;
 
         public Character(CharacterScript script, int i) {
             cs = script;
             id = i;
             locked = false;
+        }
+
+        public int getRange() {
+            switch(lo) {
+                case loadout.SHORT:
+                    return 15;
+                case loadout.MEDIUM:
+                    return 25;
+                default:
+                case loadout.LONG:
+                    return 35;
+            }
+        }
+
+        public void setLoadout(loadout newLoadout) {
+            cs.setLoadout(newLoadout);
+            lo = newLoadout;
         }
     }
 
@@ -189,10 +207,13 @@ public class TEAM_RED_SCRIPT : MonoBehaviour
             }
         }*/
         startingStrategy();
-        checkVisible(characters);
-        character1.rotateAngle(500);
-        character2.rotateAngle(500);
-        character3.rotateAngle(500);
+        Dictionary<int, Vector3> found = checkVisible(characters);
+        foreach (Character c in characters) {
+            if(!found.ContainsKey(c.id))
+                c.cs.rotateAngle(500);
+            else
+                c.cs.SetFacing(found[c.id]);
+        }
     }
 
     // a simple function to track game time
@@ -202,33 +223,28 @@ public class TEAM_RED_SCRIPT : MonoBehaviour
     }
 
     public void startingStrategy() {
-        List<CharacterScript> characters = new List<CharacterScript>();
 
-        characters.Add( character2 );
-        characters.Add( character1 );
-        characters.Add( character3 );
-
-        if ( characters[0].getZone() == zone.BlueBase || character1.getZone() == zone.RedBase )
+        if ( characters[0].cs.getZone() == zone.BlueBase || characters[0].cs.getZone() == zone.RedBase )
             characters[0].setLoadout( loadout.MEDIUM );
-        if ( characters[1].getZone() == zone.BlueBase || character2.getZone() == zone.RedBase )
+        if ( characters[1].cs.getZone() == zone.BlueBase || characters[1].cs.getZone() == zone.RedBase )
             characters[1].setLoadout( loadout.SHORT );
-        if ( characters[2].getZone() == zone.BlueBase || character2.getZone() == zone.RedBase )
+        if ( characters[2].cs.getZone() == zone.BlueBase || characters[2].cs.getZone() == zone.RedBase )
             characters[2].setLoadout( loadout.LONG );
 
-        pincerStrategy( characters );
+        pincerStrategy();
     }
 
     // 1-0-2
-    public void pincerStrategy( List<CharacterScript> characters ) {
+    public void pincerStrategy() {
         if ( leftObjective.getControllingTeam() != ourTeamColor || rightObjective.getControllingTeam() != ourTeamColor ) {
-            characters[0].MoveChar( leftObjective.transform.position );
+            characters[0].cs.MoveChar( leftObjective.transform.position );
 
-            characters[1].MoveChar( rightObjective.transform.position );
-            characters[2].MoveChar( rightObjective.transform.position );
+            characters[1].cs.MoveChar( rightObjective.transform.position );
+            characters[2].cs.MoveChar( rightObjective.transform.position );
         } else {
-            characters[0].MoveChar( middleObjective.transform.position );
-            characters[1].MoveChar( middleObjective.transform.position );
-            characters[2].MoveChar( middleObjective.transform.position );
+            characters[0].cs.MoveChar( middleObjective.transform.position );
+            characters[1].cs.MoveChar( middleObjective.transform.position );
+            characters[2].cs.MoveChar( middleObjective.transform.position );
         }
     }
 
@@ -257,18 +273,23 @@ public class TEAM_RED_SCRIPT : MonoBehaviour
 
 
 
-    public void checkVisible(List<Character> dudes){
-        foreach (Character dude in dudes) {
-            if(dude.cs.visibleEnemyLocations.Count > 0 && !dude.locked) {
-                dude.cs.setLock();
-                dude.locked = true;
-            }
-            if(dude.cs.visibleEnemyLocations.Count == 0 && dude.locked) {
-                dude.cs.setLock();
-                dude.locked = false;
+    public Dictionary<int, Vector3> checkVisible(List<Character> dudes){
+        Dictionary<int, Vector3> ret = new Dictionary<int, Vector3>();
+        for (int i = 0; i < 3; i++) {
+            Character dude = dudes[i];
+            if(dude.cs.visibleEnemyLocations.Count > 0) {
+                Vector3 targetLoc = dude.cs.visibleEnemyLocations[0];
+                ret[dude.id] = dude.cs.visibleEnemyLocations[0];
+                for (int j = 0; j < 3; j++) {
+                    Character otherDude = dudes[(i+j)%3];
+                    if(!ret.ContainsKey(otherDude.id) && 
+                        Vector3.Distance(otherDude.cs.getPrefabObject().transform.position, targetLoc) <= otherDude.getRange())
+                        ret[otherDude.id] = targetLoc;
+                }
             }
             dude.cs.visibleEnemyLocations.Clear();
         }
+        return ret;
     }
 
     public Vector3 buddySystemScan(List<CharacterScript> buds){
