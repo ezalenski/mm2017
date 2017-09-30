@@ -32,11 +32,25 @@ public class TEAM_RED_SCRIPT : MonoBehaviour
     private LoggingSystem logSystem;
     private Vector3 blueSpawn = new Vector3(55.0f, 1.325f, -30.0f);
     private Vector3 redSpawn = new Vector3(-55.0f, 1.325f, 30.0f);
+    private List<Character> characters;
     //---------- CHANGE THIS NAME HERE -------
     public static TEAM_RED_SCRIPT AddYourselfTo(GameObject host)
     {
         //---------- CHANGE THIS NAME HERE -------
         return host.AddComponent<TEAM_RED_SCRIPT>();
+    }
+
+    [System.Serializable]
+    public class Character {
+        public CharacterScript cs;
+        public bool locked;
+        public int id;
+
+        public Character(CharacterScript script, int i) {
+            cs = script;
+            id = i;
+            locked = false;
+        }
     }
 
     [System.Serializable]
@@ -99,6 +113,10 @@ public class TEAM_RED_SCRIPT : MonoBehaviour
         character1 = transform.Find("Character1").gameObject.GetComponent<CharacterScript>();
         character2 = transform.Find("Character2").gameObject.GetComponent<CharacterScript>();
         character3 = transform.Find("Character3").gameObject.GetComponent<CharacterScript>();
+        characters = new List<Character>();
+        characters.Add(new Character(character1, 0));
+        characters.Add(new Character(character2, 1));
+        characters.Add(new Character(character3, 2));
 
         // populate the objectives
         middleObjective = GameObject.Find("MiddleObjective").GetComponent<ObjectiveScript>();
@@ -171,6 +189,10 @@ public class TEAM_RED_SCRIPT : MonoBehaviour
             }
         }*/
         startingStrategy();
+        checkVisible(characters);
+        character1.rotateAngle(500);
+        character2.rotateAngle(500);
+        character3.rotateAngle(500);
     }
 
     // a simple function to track game time
@@ -235,10 +257,18 @@ public class TEAM_RED_SCRIPT : MonoBehaviour
 
 
 
-    public Vector3 eyesOnTarget(CharacterScript dude){
-        //if()
-        return Vector3.zero;
-
+    public void checkVisible(List<Character> dudes){
+        foreach (Character dude in dudes) {
+            if(dude.cs.visibleEnemyLocations.Count > 0 && !dude.locked) {
+                dude.cs.setLock();
+                dude.locked = true;
+            }
+            if(dude.cs.visibleEnemyLocations.Count == 0 && dude.locked) {
+                dude.cs.setLock();
+                dude.locked = false;
+            }
+            dude.cs.visibleEnemyLocations.Clear();
+        }
     }
 
     public Vector3 buddySystemScan(List<CharacterScript> buds){
