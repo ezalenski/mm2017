@@ -97,39 +97,4 @@ namespace CSharpCompiler
             return result.CompiledAssembly;
         }
     }
-
-
-    public class squads : MonoBehaviour {
-
-        private List<GameObject> squad = new List<GameObject>();
-
-        public int currentSquad() {
-
-            return -1;
-        }
-
-        public void transfer() {
-
-        }
-
-        public int currentLocation() {
-            return 0;
-        }
-
-        public int size() {
-            return 1;
-        }
-
-        public void clear() {
-
-        }
-
-        public void changeLeader() {
-
-        }
-
-        public void setLeader() {
-
-        }
-    }
 }

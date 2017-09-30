@@ -1,13 +1,13 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 //---------- CHANGE THIS NAME HERE -------
-public class ALTERNATIVE_INTELLIGENCE : MonoBehaviour
+public class TEAM_RED_SCRIPT : MonoBehaviour
 {
     //private Vector3 position = new Vector3(20.0f, 0.0f, 20.0f);
 
     /// <summary>
-    /// DO NOT MODIFY THIS!
+    /// DO NOT MODIFY THIS! 
     /// vvvvvvvvv
     /// </summary>
     [SerializeField]
@@ -19,7 +19,7 @@ public class ALTERNATIVE_INTELLIGENCE : MonoBehaviour
     /// <summary>
     /// ^^^^^^^^
     /// </summary>
-    ///
+    /// 
 
 
     // USEFUL VARIABLES
@@ -29,12 +29,11 @@ public class ALTERNATIVE_INTELLIGENCE : MonoBehaviour
     private float timer = 0;
 
     private team ourTeamColor;
-    private List<Vector3> enemyPositions = new List<Vector3>;
     //---------- CHANGE THIS NAME HERE -------
-    public static ALTERNATIVE_INTELLIGENCE AddYourselfTo(GameObject host)
+    public static TEAM_RED_SCRIPT AddYourselfTo(GameObject host)
     {
         //---------- CHANGE THIS NAME HERE -------
-        return host.AddComponent<ALTERNATIVE_INTELLIGENCE>();
+        return host.AddComponent<TEAM_RED_SCRIPT>();
     }
 
     void Start()
@@ -53,15 +52,16 @@ public class ALTERNATIVE_INTELLIGENCE : MonoBehaviour
         ourTeamColor = character1.getTeam();
         //Makes gametimer call every second
         InvokeRepeating("gameTimer", 0.0f, 1.0f);
+
     }
 
     void Update()
     {
         //Set caracter loadouts, can only happen when the characters are at base.
         if (character1.getZone() == zone.BlueBase || character1.getZone() == zone.RedBase)
-            character1.setLoadout(loadout.SHORT);
+            character1.setLoadout(loadout.LONG);
         if (character2.getZone() == zone.BlueBase || character2.getZone() == zone.RedBase)
-            character2.setLoadout(loadout.MEDIUM);
+            character2.setLoadout(loadout.LONG);
         if (character2.getZone() == zone.BlueBase || character2.getZone() == zone.RedBase)
             character3.setLoadout(loadout.LONG);
 
@@ -71,7 +71,7 @@ public class ALTERNATIVE_INTELLIGENCE : MonoBehaviour
             character1.FaceClosestWaypoint();
             character2.FaceClosestWaypoint();
             character3.FaceClosestWaypoint();
-            character1.MoveChar(new Vector3(-8.8f, 1.5f, 13.5f)); 
+            character1.MoveChar(new Vector3(-8.8f, 1.5f, 13.5f));
         }
         // place sniper in position, run to cover if attacked
         if (character1.attackedFromLocations.Capacity == 0)
@@ -120,10 +120,3 @@ public class ALTERNATIVE_INTELLIGENCE : MonoBehaviour
 
 }
 
-//actions move character
-private class ActionInput
-{
-    public List<Vector3> teamPositions;
-    public List<Vector3> enemyPositions;
-    public Vector3 target;
-}
